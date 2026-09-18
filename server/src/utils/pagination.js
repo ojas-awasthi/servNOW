@@ -1,12 +1,22 @@
-const getPagination = (page = 1, limit = 10) => {
-  const currentPage = Math.max(Number(page) || 1, 1);
-  const pageLimit = Math.min(Math.max(Number(limit) || 10, 1), 100);
+const getPagination = (query = {}) => {
+  const page = Math.max(
+    parseInt(query.page, 10) || 1,
+    1
+  );
 
-  const skip = (currentPage - 1) * pageLimit;
+  const limit = Math.min(
+    Math.max(
+      parseInt(query.limit, 10) || 10,
+      1
+    ),
+    100
+  );
+
+  const skip = (page - 1) * limit;
 
   return {
-    page: currentPage,
-    limit: pageLimit,
+    page,
+    limit,
     skip,
   };
 };

@@ -4,6 +4,7 @@ const Booking = require("../models/Booking");
 const Service = require("../models/Service");
 const ApiError = require("../utils/ApiError");
 const getPagination = require("../utils/pagination");
+const createNotification = require("../utils/createNotification");
 
 const createBooking = async (data, currentUser) => {
   if (!mongoose.Types.ObjectId.isValid(data.service)) {
@@ -43,6 +44,22 @@ const createBooking = async (data, currentUser) => {
     amount: service.price,
     status: "pending",
     paymentStatus: "pending",
+  });
+
+  await createNotification({
+    user: currentUser.userId,
+    title: "Booking created",
+    message: `Your booking for ${service.title} has been created successfully.`,
+    type: "booking",
+    relatedId: booking._id,
+  });
+
+  await createNotification({
+    user: service.provider,
+    title: "New booking received",
+    message: `You have received a new booking for ${service.title}.`,
+    type: "booking",
+    relatedId: booking._id,
   });
 
   return Booking.findById(booking._id)
