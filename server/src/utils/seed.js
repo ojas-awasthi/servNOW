@@ -5,9 +5,9 @@ const bcrypt = require("bcrypt");
 
 const connectDB = require("../config/db");
 
-const User = require("../models/User");
-const Category = require("../models/Category");
-const Service = require("../models/Service");
+const User = require("../models/user");
+const Category = require("../models/category");
+const Service = require("../models/service");
 
 const seedDatabase = async () => {
   try {
