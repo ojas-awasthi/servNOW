@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
-const Booking = require("../models/Booking");
-const Service = require("../models/Service");
+const Booking = require("../models/booking");
+const Service = require("../models/service");
 const ApiError = require("../utils/ApiError");
 const getPagination = require("../utils/pagination");
 const createNotification = require("../utils/createNotification");
