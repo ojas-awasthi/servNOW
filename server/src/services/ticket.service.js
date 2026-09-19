@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
-const SupportTicket = require("../models/SupportTicket");
-const User = require("../models/User");
+const SupportTicket = require("../models/supportTicket");
+const User = require("../models/user");
 const ApiError = require("../utils/ApiError");
 const getPagination = require("../utils/pagination");
 const createNotification = require("../utils/createNotification");
