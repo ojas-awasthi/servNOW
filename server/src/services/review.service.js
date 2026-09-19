@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 
-const Review = require("../models/Review");
-const Booking = require("../models/Booking");
-const Service = require("../models/Service");
+const Review = require("../models/review");
+const Booking = require("../models/booking");
+const Service = require("../models/service");
 const ApiError = require("../utils/ApiError");
 
 const recalculateServiceRating = async (serviceId) => {
