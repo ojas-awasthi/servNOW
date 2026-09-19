@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const Category = require("../models/Category");
+const Category = require("../models/category");
 const ApiError = require("../utils/ApiError");
 
 const getCategories = async (query) => {
