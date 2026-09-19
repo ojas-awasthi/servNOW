@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
-const Wishlist = require("../models/Wishlist");
-const Service = require("../models/Service");
+const Wishlist = require("../models/wishlist");
+const Service = require("../models/service");
 const ApiError = require("../utils/ApiError");
 
 const getWishlist = async (userId) => {
