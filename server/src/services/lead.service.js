@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 
-const Lead = require("../models/Lead");
-const User = require("../models/User");
-const Service = require("../models/Service");
+const Lead = require("../models/lead");
+const User = require("../models/user");
+const Service = require("../models/service");
 const ApiError = require("../utils/ApiError");
 const getPagination = require("../utils/pagination");
 const createNotification = require("../utils/createNotification");
