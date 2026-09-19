@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 const crypto = require("crypto");
 
-const Transaction = require("../models/Transaction");
-const Booking = require("../models/Booking");
-const User = require("../models/User");
-const Service = require("../models/Service");
+const Transaction = require("../models/transaction");
+const Booking = require("../models/booking");
+const User = require("../models/user");
+const Service = require("../models/service");
 
 const ApiError = require("../utils/ApiError");
 const createNotification = require("../utils/createNotification");
