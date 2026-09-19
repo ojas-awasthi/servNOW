@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const Notification = require("../models/Notification");
+const Notification = require("../models/notification");
 const ApiError = require("../utils/ApiError");
 const getPagination = require("../utils/pagination");
 
