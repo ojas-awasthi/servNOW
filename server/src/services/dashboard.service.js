@@ -1,10 +1,10 @@
-const User = require("../models/User");
-const Service = require("../models/Service");
-const Category = require("../models/Category");
-const Booking = require("../models/Booking");
-const Transaction = require("../models/Transaction");
-const Lead = require("../models/Lead");
-const SupportTicket = require("../models/SupportTicket");
+const User = require("../models/user");
+const Service = require("../models/service");
+const Category = require("../models/category");
+const Booking = require("../models/booking");
+const Transaction = require("../models/transaction");
+const Lead = require("../models/lead");
+const SupportTicket = require("../models/supportTicket");
 
 const getDashboardSummary = async () => {
   const [
