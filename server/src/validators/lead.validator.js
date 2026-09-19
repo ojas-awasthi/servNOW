@@ -92,15 +92,7 @@ const updateLeadStatusSchema = Joi.object({
 });
 
 const assignLeadSchema = Joi.object({
-  body: Joi.object({
-    assignedTo: Joi.string().required(),
-  }),
-
-  params: Joi.object({
-    id: Joi.string().required(),
-  }),
-
-  query: Joi.object(),
+  assignedTo: Joi.string().allow("").required(),
 });
 
 const followUpSchema = Joi.object({

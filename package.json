@@ -4,7 +4,8 @@
   "private": true,
   "description": "Full Stack Service Marketplace and CRM Management Platform",
   "scripts": {
-    "client": "npm --prefix client run dev",
-    "server": "npm --prefix server run dev"
-  }
+  "client": "npm --prefix client run dev",
+  "server": "npm --prefix server run dev",
+  "build": "npm --prefix client run build"
+}
 }

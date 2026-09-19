@@ -1,6 +1,7 @@
 const express = require("express");
 
 const transactionController = require("../controllers/transaction.controller");
+
 const protect = require("../middleware/auth.middleware");
 const authorize = require("../middleware/role.middleware");
 const validate = require("../middleware/validate.middleware");
@@ -8,29 +9,61 @@ const validate = require("../middleware/validate.middleware");
 const {
   createPaymentSchema,
   transactionIdSchema,
+  adminTransactionQuerySchema,
 } = require("../validators/transaction.validator");
 
 const router = express.Router();
 
-// All transaction routes require customer authentication
-router.use(protect, authorize("customer"));
-
-// Mock payment
+/*
+ * Customer payment
+ */
 router.post(
   "/pay",
+  protect,
+  authorize("customer"),
   validate(createPaymentSchema),
   transactionController.createPayment
 );
 
-// Get my transactions
+/*
+ * CRM / Admin transaction list
+ */
+router.get(
+  "/admin",
+  protect,
+  authorize("admin", "sales", "support"),
+  validate(adminTransactionQuerySchema),
+  transactionController.getAdminTransactions
+);
+
+/*
+ * CRM / Admin transaction details
+ */
+router.get(
+  "/admin/:id",
+  protect,
+  authorize("admin", "sales", "support"),
+  validate(transactionIdSchema),
+  transactionController.getAdminTransactionById
+);
+
+/*
+ * Customer transaction list
+ */
 router.get(
   "/",
+  protect,
+  authorize("customer"),
   transactionController.getMyTransactions
 );
 
-// Get a specific transaction
+/*
+ * Customer transaction details
+ */
 router.get(
   "/:id",
+  protect,
+  authorize("customer"),
   validate(transactionIdSchema),
   transactionController.getTransactionById
 );

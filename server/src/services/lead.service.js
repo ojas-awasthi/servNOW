@@ -49,7 +49,6 @@ const createLead = async (data) => {
     .populate("convertedCustomer", "name email");
 };
 
-
 const getLeads = async (query) => {
   const {
     search,
@@ -116,7 +115,6 @@ const getLeads = async (query) => {
   };
 };
 
-
 const getLeadById = async (leadId) => {
   if (!mongoose.Types.ObjectId.isValid(leadId)) {
     throw new ApiError(400, "Invalid lead ID");
@@ -133,7 +131,6 @@ const getLeadById = async (leadId) => {
 
   return lead;
 };
-
 
 const updateLead = async (leadId, data) => {
   if (!mongoose.Types.ObjectId.isValid(leadId)) {
@@ -169,7 +166,6 @@ const updateLead = async (leadId, data) => {
     .populate("convertedCustomer", "name email");
 };
 
-
 const updateLeadStatus = async (leadId, status) => {
   if (!mongoose.Types.ObjectId.isValid(leadId)) {
     throw new ApiError(400, "Invalid lead ID");
@@ -191,12 +187,40 @@ const updateLeadStatus = async (leadId, status) => {
     .populate("convertedCustomer", "name email");
 };
 
-
 const assignLead = async (leadId, assignedTo) => {
   if (!mongoose.Types.ObjectId.isValid(leadId)) {
     throw new ApiError(400, "Invalid lead ID");
   }
 
+  const lead = await Lead.findById(leadId);
+
+  if (!lead) {
+    throw new ApiError(404, "Lead not found");
+  }
+
+  /*
+   * Allow a lead to be unassigned.
+   *
+   * Frontend sends:
+   * {
+   *   assignedTo: ""
+   * }
+   *
+   * The database stores:
+   * assignedTo: null
+   */
+  if (assignedTo === null || assignedTo === "") {
+    lead.assignedTo = null;
+
+    await lead.save();
+
+    return Lead.findById(lead._id)
+      .populate("serviceInterest", "title price")
+      .populate("assignedTo", "name email role")
+      .populate("convertedCustomer", "name email");
+  }
+
+  // Normal assignment flow
   if (!mongoose.Types.ObjectId.isValid(assignedTo)) {
     throw new ApiError(400, "Invalid user ID");
   }
@@ -221,13 +245,8 @@ const assignLead = async (leadId, assignedTo) => {
     );
   }
 
-  const lead = await Lead.findById(leadId);
-
-  if (!lead) {
-    throw new ApiError(404, "Lead not found");
-  }
-
   lead.assignedTo = assignedTo;
+
   await lead.save();
 
   await createNotification({
@@ -275,7 +294,6 @@ const getFollowUpLeads = async (type = "upcoming") => {
   return leads;
 };
 
-
 const deleteLead = async (leadId) => {
   if (!mongoose.Types.ObjectId.isValid(leadId)) {
     throw new ApiError(400, "Invalid lead ID");
@@ -293,7 +311,6 @@ const deleteLead = async (leadId) => {
     message: "Lead deleted successfully",
   };
 };
-
 
 module.exports = {
   createLead,
