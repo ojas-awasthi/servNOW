@@ -18,6 +18,13 @@ const errorHandler = require("./middleware/error.middleware");
 
 const app = express();
 
+app.get("/", (req, res) => {
+  res.json({
+    success: true,
+    message: "ServNOW API is running 🚀"
+  });
+});
+
 app.use(
   cors({
     origin: true,
