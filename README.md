@@ -1,64 +1,156 @@
-# ServNOW
+# ServNOW — Service Marketplace + CRM Management Platform
 
-ServNOW is a full-stack **Service Marketplace + CRM Management Platform** built as an end-to-end web application.
+ServNOW is a full-stack Service Marketplace and CRM Management Platform built as a technical assessment project. It combines a customer-facing service marketplace with an integrated CRM for managing customers, providers, services, bookings, leads, transactions, support tickets, notifications, and users.
 
-It combines a customer-facing service marketplace with a CRM system for managing customers, providers, services, bookings, leads, transactions, support tickets, notifications, and users.
+## Live Deployment
 
-## Features
+**Frontend:** https://servnow-proj.vercel.app/
 
-### Customer Platform
-- Responsive customer-facing website
-- Service discovery, search, filtering, sorting, and pagination
-- Service details and provider information
-- Wishlist
-- Registration and login
+**Backend API:** https://servnow-api.onrender.com
+
+**GitHub Repository:** https://github.com/ojas-awasthi/servnow-proj
+
+**Database:** MongoDB Atlas
+
+---
+
+## Project Overview
+
+```text
+Customer / CRM Frontend
+        |
+        v
+React + Vite + Redux Toolkit
+        |
+        v
+Axios / REST API
+        |
+        v
+Node.js + Express.js
+        |
+        +-- Authentication / JWT
+        +-- Role-Based Access Control
+        +-- Validation
+        +-- Controllers
+        +-- Services
+        +-- Error Handling
+        |
+        v
+Mongoose
+        |
+        v
+MongoDB Atlas
+```
+
+---
+
+## Key Features
+
+### Customer Marketplace
+
+- Responsive homepage
+- Service discovery
+- Service search
+- Category filtering
+- Price filtering
+- Rating filtering
+- Sorting
+- Pagination
+- Service details
+- Provider information
+- Featured and trending services
+- User registration and login
 - JWT authentication
+- Wishlist
 - Service booking
-- Appointment date/time, address, and notes
-- Mock payment flow
+- Date/time selection
+- Address and booking notes
+- Mock payment
 - Booking confirmation
-- Booking history and status tracking
-- Customer dashboard and profile
+- Booking history
+- Booking status tracking
+- Customer dashboard
+- Customer profile
 - Service reviews and ratings
-- Loading, empty, and error states
-- Responsive mobile/tablet/desktop UI
 
-### CRM Platform
-- CRM dashboard and analytics
-- Customer and provider management
-- Service and category management
+### CRM / Admin Platform
+
+- CRM dashboard
+- KPI statistics
+- Revenue analytics
+- Booking analytics
+- Lead analytics
+- Ticket analytics
+- Customer management
+- Provider management
+- Service management
+- Category management
 - Booking management
-- Lead management, assignment, follow-up, status management, and Kanban workflow
+- Booking/payment status management
+- Lead management
+- Lead assignment
+- Lead follow-up dates
+- Lead status workflow
+- Kanban lead management
 - Transaction management
 - Support ticket management
-- Notifications
-- User and role management
-- Role-based access control
+- Notification management
+- User management
+- Role management
+- User status management
+
+---
 
 ## User Roles
 
 | Role | Purpose |
 |---|---|
-| Customer | Browse and book services |
-| Provider | Service provider account |
+| Customer | Browse services, book services, manage wishlist, view bookings and submit reviews |
+| Provider | Service provider account associated with marketplace services |
 | Sales | CRM sales and lead management |
-| Support | Support ticket management |
-| Admin | Full CRM/user management |
+| Support | Customer support and ticket management |
+| Admin | Full administrative and CRM access |
 
-## Technology Stack
+---
 
-### Frontend
+# Demo Credentials
+
+**Password for all demo accounts:**
+
+```text
+Test123456
+```
+
+| Name | Email | Role | Password |
+|---|---|---|---|
+| Aru | `aru22@gmail.com` | Customer | `Test123456` |
+| Pankaj Yadav | `ada@servnow.com` | Customer | `Test123456` |
+| Ojas Test | `ojastest@servnow.com` | Customer | `Test123456` |
+| ServNOW Support | `support@servnow.com` | Support | `Test123456` |
+| ServNOW Sales | `sales@servnow.test` | Sales | `Test123456` |
+| Ojas Customer | `customer@servnow.com` | Customer | `Test123456` |
+| Raj Services | `provider@servnow.com` | Provider | `Test123456` |
+| ServNOW Admin | `admin@servnow.com` | Admin | `Test123456` |
+
+> **Production note:** `sales@servnow.test` uses a reserved `.test` domain. If the production email validator rejects this address during login, update that account in MongoDB Atlas to a valid domain such as `sales@servnow.com` before using the Sales demo account.
+
+---
+
+# Tech Stack
+
+## Frontend
+
 - React.js
 - Vite
 - Redux Toolkit
 - React Router
 - Axios
 - Tailwind CSS
-- shadcn/ui
 - Lucide React
 - Recharts
 
-### Backend
+## Backend
+
 - Node.js
 - Express.js
 - MongoDB
@@ -66,230 +158,168 @@ It combines a customer-facing service marketplace with a CRM system for managing
 - JWT
 - bcrypt
 - Joi
-- CORS
-- dotenv
+- REST APIs
 
-### Development
-- Git
-- GitHub
-- Postman
-- MongoDB Atlas
+## Deployment
 
-## Architecture
+- Vercel — Frontend
+- Render — Backend
+- MongoDB Atlas — Database
+- GitHub — Source control
 
-```text
-                    ServNOW
-                       |
-          +------------+------------+
-          |                         |
-          v                         v
-   Customer Frontend          CRM Frontend
-     React + Vite             React + Vite
-          |                         |
-          +------------+------------+
-                       |
-                  Axios / REST
-                       |
-                       v
-              Node.js + Express
-                       |
-          +------------+------------+
-          |            |            |
-       Routes      Middleware   Controllers
-                       |
-                  Services
-                       |
-                  Validation
-                       |
-                    Mongoose
-                       |
-                       v
-                MongoDB Atlas
-```
+---
 
-See `docs/architecture.md` for more detail.
+# Architecture
 
-## Project Structure
+The application follows a layered MVC / clean-architecture-oriented structure.
 
 ```text
-ServNOW/
-├── client/
-│   ├── public/
-│   ├── src/
-│   │   ├── assets/
-│   │   ├── components/
-│   │   ├── layouts/
-│   │   ├── pages/
-│   │   ├── features/
-│   │   ├── store/
-│   │   ├── services/
-│   │   ├── hooks/
-│   │   ├── utils/
-│   │   ├── routes/
-│   │   ├── App.jsx
-│   │   ├── main.jsx
-│   │   └── index.css
-│   └── package.json
-├── server/
-│   ├── src/
-│   │   ├── config/
-│   │   ├── controllers/
-│   │   ├── middleware/
-│   │   ├── models/
-│   │   ├── routes/
-│   │   ├── services/
-│   │   ├── validators/
-│   │   ├── utils/
-│   │   ├── app.js
-│   │   └── server.js
-│   ├── .env.example
-│   └── package.json
-├── postman/
-├── docs/
-├── .gitignore
-├── package.json
-└── README.md
+Frontend
+|
++-- Pages
++-- Components
++-- Layouts
++-- Redux Store / Features
++-- Routes
++-- API Service
+        |
+        v
+Backend
+|
++-- Routes
++-- Middleware
+|   +-- Authentication
+|   +-- Authorization
+|   +-- Validation
+|   +-- Error Handling
+|
++-- Controllers
++-- Services
++-- Validators
++-- Models
++-- Utilities
+        |
+        v
+MongoDB Atlas
 ```
 
-## Database Models
+---
 
-ServNOW uses MongoDB Atlas with Mongoose.
+# Authentication & Authorization
 
-- **User** — customer, provider, sales, support, and admin accounts.
-- **Category** — service categories.
-- **Service** — marketplace services linked to category and provider.
-- **Booking** — customer, provider, service, appointment, amount, status, and payment status.
-- **Transaction** — payment transaction linked to booking and customer.
-- **Wishlist** — services saved by a customer.
-- **Review** — customer feedback and ratings for services.
-- **Lead** — CRM lead, assignment, status, priority, and follow-up.
-- **SupportTicket** — customer support request, assignment, priority, and status.
-- **Notification** — user notifications and read/unread state.
+Authentication is implemented using:
 
-See `docs/database-schema.md` for relationships and fields.
+- JWT access tokens
+- bcrypt password hashing
+- Protected routes
+- Role-based authorization
+- Joi request validation
+- Centralized error handling
 
-## Authentication & RBAC
+The frontend stores the authentication token locally and Axios automatically attaches the token to protected API requests.
 
-Authentication uses JWT.
+CRM routes are protected by role-based authorization.
+
+---
+
+# Database Models
+
+The backend uses Mongoose models for:
+
+1. **User**
+2. **Category**
+3. **Service**
+4. **Booking**
+5. **Transaction**
+6. **Wishlist**
+7. **Review**
+8. **Lead**
+9. **SupportTicket**
+10. **Notification**
+
+Detailed database model documentation is available in:
 
 ```text
-POST /api/auth/register
-POST /api/auth/login
-GET  /api/auth/me
+docs/database-schema.md
 ```
 
-Protected requests use:
+The schema documentation describes fields, types, constraints, references, and model relationships.
+
+## Main Relationships
 
 ```text
-Authorization: Bearer <JWT>
+User
+ +-- Customer
+ +-- Provider
+ +-- Sales
+ +-- Support
+ +-- Admin
+
+Category
+ +-- Service
+
+Provider
+ +-- Service
+
+Customer
+ +-- Booking
+ +-- Wishlist
+ +-- Review
+
+Service
+ +-- Booking
+ +-- Wishlist
+ +-- Review
+
+Booking
+ +-- Transaction
+
+Lead
+ +-- Service Interest
+ +-- Assigned User
+ +-- Converted Customer
+
+SupportTicket
+ +-- Customer
+ +-- Assigned User
+
+Notification
+ +-- User
 ```
 
-Passwords are hashed using bcrypt.
+---
 
-Protected routes and APIs use authentication and role authorization middleware.
-
-## Environment Variables
-
-Create `server/.env`:
-
-```env
-PORT=5000
-NODE_ENV=development
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret
-JWT_EXPIRES_IN=7d
-```
-
-Create `client/.env`:
-
-```env
-VITE_API_URL=http://localhost:5000/api
-```
-
-Never commit real secrets.
-
-## Installation
-
-Prerequisites:
-- Node.js
-- npm
-- MongoDB Atlas
-- Git
-
-Clone:
-
-```bash
-git clone https://github.com/ojas-awasthi/servNOW.git
-cd servNOW
-```
-
-Install frontend dependencies:
-
-```bash
-cd client
-npm install
-```
-
-Install backend dependencies:
-
-```bash
-cd ../server
-npm install
-```
-
-## Running Locally
-
-From the project root:
-
-```bash
-npm run client
-```
-
-In another terminal:
-
-```bash
-npm run server
-```
-
-## Production Build
-
-From the project root:
-
-```bash
-npm run build
-```
-
-This runs the Vite production build and generates `client/dist/`.
-
-## Customer Workflow
+# Customer Workflow
 
 ```text
-Home
-  ↓
-Services
-  ↓
+Homepage
+   |
+Browse Services
+   |
 Search / Filter / Sort
-  ↓
+   |
 Service Details
-  ↓
-Wishlist / Booking
-  ↓
-Booking Form
-  ↓
+   |
+Login / Register
+   |
+Book Service
+   |
 Checkout
-  ↓
+   |
 Mock Payment
-  ↓
+   |
 Booking Confirmation
-  ↓
+   |
 Customer Dashboard
-  ↓
-Booking Details / Tracking
-  ↓
+   |
+Booking Tracking
+   |
 Review
 ```
 
-## CRM Workflow
+---
+
+# CRM Workflow
 
 ```text
 CRM Dashboard
@@ -306,123 +336,360 @@ CRM Dashboard
       +-- Users & Roles
 ```
 
-## Booking Lifecycle
+### Lead Lifecycle
 
 ```text
-Pending → Confirmed → In Progress → Completed
+New -> Contacted -> Qualified -> Proposal -> Converted
+                                      |
+                                      +-> Lost
 ```
 
-A booking can also be cancelled.
-
-## Lead Lifecycle
+### Booking Lifecycle
 
 ```text
-New → Contacted → Qualified → Proposal → Converted
+Pending -> Confirmed -> In Progress -> Completed
+
+Alternative:
+Pending / Confirmed / In Progress -> Cancelled
 ```
 
-A lead may also be marked as lost.
+### Payment Lifecycle
 
-## Payment
+```text
+Pending -> Paid
 
-The project includes a mock/test payment flow demonstrating the booking-to-transaction workflow.
+Other supported states:
+Failed
+Refunded
+```
 
-Payment categories include:
-- Card
-- UPI
-- Netbanking
-- Wallet
-- Mock payment
+### Support Ticket Lifecycle
 
-## API Documentation
+```text
+Open -> Assigned -> In Progress -> Resolved -> Closed
+```
 
-The `postman/` directory contains the API documentation/collection.
+---
 
-Major API areas:
-- Auth
-- Services
-- Categories
-- Bookings
-- Transactions
-- Reviews
-- Wishlist
-- Leads
-- Support Tickets
-- Notifications
-- Users
-- Dashboard
+# API Documentation
 
-See `docs/api-documentation.md`.
+API documentation is available at:
 
-## Demo Accounts
+```text
+docs/api-documentation.md
+```
 
-The following are intended for assessment/demo use and should only be documented if they have been created successfully:
+The API is organized into the following major resource groups:
 
-| Role | Email | Password |
-|---|---|---|
-| Customer | `demo.customer@servnow.com` | `ServNow@Demo2026` |
-| Provider | `demo.provider@servnow.com` | `ServNow@Demo2026` |
-| Sales | `demo.sales@servnow.com` | `ServNow@Demo2026` |
-| Support | `demo.support@servnow.com` | `ServNow@Demo2026` |
-| Admin | `demo.admin@servnow.com` | `ServNow@Demo2026` |
+```text
+/api/auth
+/api/services
+/api/categories
+/api/bookings
+/api/transactions
+/api/wishlist
+/api/reviews
+/api/leads
+/api/tickets
+/api/notifications
+/api/users
+/api/dashboard
+```
 
-## Security
+The backend follows RESTful JSON API conventions.
+
+---
+
+# Postman
+
+Postman resources are located in:
+
+```text
+postman/
+```
+
+The API collection can be imported into Postman for testing the backend endpoints.
+
+---
+
+# Project Structure
+
+```text
+ServNOW/
+|
++-- client/
+|   +-- public/
+|   +-- src/
+|   |   +-- assets/
+|   |   +-- components/
+|   |   |   +-- common/
+|   |   |   +-- customer/
+|   |   |   +-- crm/
+|   |   +-- layouts/
+|   |   +-- pages/
+|   |   |   +-- customer/
+|   |   |   +-- auth/
+|   |   |   +-- crm/
+|   |   +-- features/
+|   |   +-- store/
+|   |   +-- services/
+|   |   +-- hooks/
+|   |   +-- utils/
+|   |   +-- routes/
+|   |   +-- App.jsx
+|   |   +-- main.jsx
+|   |   +-- index.css
+|   +-- package.json
+|   +-- vite.config.js
+|   +-- vercel.json
+|
++-- server/
+|   +-- src/
+|   |   +-- config/
+|   |   +-- controllers/
+|   |   +-- middleware/
+|   |   +-- models/
+|   |   +-- routes/
+|   |   +-- services/
+|   |   +-- validators/
+|   |   +-- utils/
+|   |   +-- app.js
+|   |   +-- server.js
+|   +-- .env.example
+|   +-- package.json
+|
++-- docs/
+|   +-- architecture.md
+|   +-- database-schema.md
+|   +-- api-documentation.md
+|
++-- postman/
+|   +-- README.md
+|
++-- .gitignore
++-- README.md
++-- package.json
+```
+
+---
+
+# Environment Variables
+
+## Backend
+
+Create:
+
+```text
+server/.env
+```
+
+Example:
+
+```env
+PORT=5000
+NODE_ENV=development
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+JWT_EXPIRES_IN=7d
+```
+
+## Frontend
+
+For local development:
+
+```env
+VITE_API_URL=http://localhost:5000/api
+```
+
+For production:
+
+```env
+VITE_API_URL=https://servnow-api.onrender.com/api
+```
+
+**Never commit production secrets or `.env` files to GitHub.**
+
+---
+
+# Local Development
+
+## Prerequisites
+
+- Node.js
+- npm
+- MongoDB Atlas account/database
+- Git
+- Postman (optional, for API testing)
+
+## Clone
+
+```bash
+git clone https://github.com/ojas-awasthi/servnow-proj.git
+cd servnow-proj
+```
+
+## Backend
+
+```bash
+cd server
+npm install
+```
+
+Create `server/.env` using the environment variables described above.
+
+Start the backend:
+
+```bash
+npm run dev
+```
+
+The backend runs locally on:
+
+```text
+http://localhost:5000
+```
+
+## Frontend
+
+Open another terminal:
+
+```bash
+cd client
+npm install
+npm run dev
+```
+
+Vite will provide the local frontend URL in the terminal.
+
+---
+
+# Production Build
+
+From the project root:
+
+```bash
+npm run build
+```
+
+The frontend production build is generated in:
+
+```text
+client/dist/
+```
+
+---
+
+# Deployment
+
+## Frontend — Vercel
+
+The frontend is deployed from:
+
+```text
+client/
+```
+
+Configuration:
+
+```text
+Root Directory: client
+Build Command: npm run build
+Output Directory: dist
+Install Command: npm install
+```
+
+The application uses a Vercel rewrite configuration for React Router SPA routes.
+
+## Backend — Render
+
+The backend is deployed from:
+
+```text
+server/
+```
+
+Configuration:
+
+```text
+Root Directory: server
+Build Command: npm install
+Start Command: npm start
+```
+
+Production environment variables are configured through Render.
+
+## Database — MongoDB Atlas
+
+The application uses MongoDB Atlas with Mongoose.
+
+Database:
+
+```text
+service_marketplace
+```
+
+---
+
+# Security
 
 The application includes:
-- JWT authentication
+
+- JWT-based authentication
 - bcrypt password hashing
 - Protected routes
-- Role-based authorization
+- Role-based access control
 - Joi request validation
-- Centralized error handling
+- Centralized API error handling
 - Environment-based secrets
-- MongoDB Atlas
-- Password exclusion from normal user queries
-- Protected CRM functionality
-- Ownership checks for customer resources
+- MongoDB authentication
+- No production `.env` files committed to GitHub
 
-## UI & UX
+The mock payment flow is intentionally a test/demo payment implementation and does not process real financial transactions.
+
+---
+
+# UI / UX
 
 The interface is designed to be:
-- Responsive
-- Accessible
-- Mobile-friendly
-- Keyboard-friendly
-- Consistent
-- Performance-conscious
 
-It uses semantic structure, accessible labels, Lucide icons, loading/empty/error states, responsive layouts, micro-interactions, and consistent visual hierarchy.
+- Responsive across mobile, tablet, laptop, and desktop
+- Accessible with semantic HTML and accessible labels
+- Consistent through reusable components
+- Focused on clear information hierarchy
+- Supported by loading and error states
+- Enhanced with subtle micro-interactions
+- Optimized for a smooth customer and CRM workflow
 
-## Deployment
+The interface uses Lucide React icons and Recharts for analytics visualization.
 
-```text
-React/Vite Frontend
-        |
-        | REST API
-        v
-Node.js + Express Backend
-        |
-        v
-MongoDB Atlas
-```
+---
 
-Configure production environment variables through the deployment platform. Never commit production secrets.
+# Assessment Submission
 
-## GitHub
+This repository contains the complete ServNOW implementation along with:
 
-https://github.com/ojas-awasthi/servNOW
+- Frontend source code
+- Backend source code
+- Database models
+- Architecture documentation
+- API documentation
+- Postman resources
+- Setup instructions
+- Deployment information
 
-## Future Improvements
+## Live Links
 
-- Real payment gateway integration
-- Provider-specific dashboards
-- Advanced notification delivery
-- Real-time booking updates
-- Advanced analytics
-- Automated email/SMS notifications
-- More granular CRM permissions
-- Automated testing coverage
-- API rate limiting and additional production hardening
+**Application:**  
+https://servnow-proj.vercel.app/
+
+**Backend API:**  
+https://servnow-api.onrender.com
+
+**Source Code:**  
+https://github.com/ojas-awasthi/servnow-proj
+
+---
 
 ## License
 
-This project was created as a full-stack technical assessment project.
+This project was developed as a technical assessment submission.
