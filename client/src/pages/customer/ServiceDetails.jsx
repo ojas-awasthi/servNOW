@@ -9,7 +9,7 @@ import {
   ShieldCheck,
   Star,
 } from "lucide-react";
-
+import { getCategoryImage } from "../../utils/categoryImages";
 import {
   useNavigate,
   useParams,
@@ -369,12 +369,24 @@ function ServiceDetails() {
             {/* Service visual */}
             <Card className="overflow-hidden">
               <div className="relative flex h-72 items-center justify-center bg-slate-100 sm:h-96">
-                <div
-                  className="text-7xl text-slate-300 transition-transform duration-500 hover:scale-105"
-                  aria-hidden="true"
-                >
-                  ✦
-                </div>
+                <div className="relative h-52 overflow-hidden bg-slate-100">
+  {getCategoryImage(service.category?.name) ? (
+    <img
+      src={getCategoryImage(service.category?.name)}
+      alt={`${service.category?.name || "Service"} category`}
+      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+    />
+  ) : (
+    <div
+      className="flex h-full items-center justify-center text-4xl text-slate-300"
+      aria-hidden="true"
+    >
+      ✦
+    </div>
+  )}
+
+  {/* existing Featured badge / Wishlist button stays here */}
+</div>
 
                 {service.isFeatured && (
                   <div className="absolute left-5 top-5">

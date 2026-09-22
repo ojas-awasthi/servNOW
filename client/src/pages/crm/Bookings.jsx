@@ -26,7 +26,7 @@ function Bookings() {
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [bookingTransaction, setBookingTransaction] = useState(null);
 const [transactionLoading, setTransactionLoading] = useState(false);
-  const [updatingStatus, setUpdatingStatus] = useState(false);
+const [updatingBookingId, setUpdatingBookingId] = useState(null);
 const [statusUpdateError, setStatusUpdateError] = useState("");
 
   const [search, setSearch] = useState("");
@@ -216,17 +216,19 @@ const [statusUpdateError, setStatusUpdateError] = useState("");
     }));
   };
 
-const handleStatusUpdate = async (nextStatus) => {
-  if (!selectedBooking?._id) return;
-
-  if (selectedBooking.status === nextStatus) return;
+const handleStatusUpdate = async (
+  bookingId,
+  currentStatus,
+  nextStatus
+) => {
+  if (!bookingId || currentStatus === nextStatus) return;
 
   try {
-    setUpdatingStatus(true);
+    setUpdatingBookingId(bookingId);
     setStatusUpdateError("");
 
     const response = await api.patch(
-      `/bookings/${selectedBooking._id}/status`,
+      `/bookings/${bookingId}/status`,
       {
         status: nextStatus,
       }
@@ -242,14 +244,19 @@ const handleStatusUpdate = async (nextStatus) => {
       )
     );
 
-    setSelectedBooking(updatedBooking);
+    // Keep the details modal synchronized if it is open.
+    setSelectedBooking((current) =>
+      current?._id === updatedBooking._id
+        ? updatedBooking
+        : current
+    );
   } catch (err) {
     setStatusUpdateError(
       err.response?.data?.message ||
         "Unable to update booking status. Please try again."
     );
   } finally {
-    setUpdatingStatus(false);
+    setUpdatingBookingId(null);
   }
 };
 
@@ -582,14 +589,49 @@ const fetchBookingTransaction = async (bookingId) => {
                       </td>
 
                       <td className="px-6 py-4">
-                        <span
-                          className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${getStatusClasses(
-                            booking.status
-                          )}`}
-                        >
-                          {formatStatus(booking.status)}
-                        </span>
-                      </td>
+  <label
+    htmlFor={`booking-status-${booking._id}`}
+    className="sr-only"
+  >
+    Update status for booking {booking._id}
+  </label>
+
+  <select
+    id={`booking-status-${booking._id}`}
+    value={booking.status || "pending"}
+    disabled={updatingBookingId === booking._id}
+    onChange={(event) =>
+      handleStatusUpdate(
+        booking._id,
+        booking.status,
+        event.target.value
+      )
+    }
+    aria-label={`Update status for booking ${booking._id}`}
+    className={`rounded-lg border-0 px-3 py-2 text-xs font-semibold outline-none ring-1 ring-inset ring-slate-200 transition focus:ring-2 focus:ring-slate-950/20 disabled:cursor-wait disabled:opacity-60 ${getStatusClasses(
+      booking.status
+    )}`}
+  >
+    <option value="pending">Pending</option>
+    <option value="confirmed">Confirmed</option>
+    <option value="in_progress">In progress</option>
+    <option value="completed">Completed</option>
+    <option value="cancelled">Cancelled</option>
+  </select>
+
+  {updatingBookingId === booking._id && (
+    <span
+      className="ml-2 inline-flex align-middle"
+      role="status"
+      aria-label="Updating booking status"
+    >
+      <Loader2
+        className="h-3.5 w-3.5 animate-spin text-slate-400"
+        aria-hidden="true"
+      />
+    </span>
+  )}
+</td>
 
                       <td className="px-6 py-4">
                         <span
@@ -608,7 +650,6 @@ const fetchBookingTransaction = async (bookingId) => {
 setStatusUpdateError("");
 setBookingTransaction(null);
 fetchBookingTransaction(booking._id);
-  fetchBookingTransaction(booking._id);
 }}
     aria-label={`View booking ${booking._id}`}
     className="rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-100 hover:text-slate-950 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2"
@@ -679,13 +720,42 @@ fetchBookingTransaction(booking._id);
                   </div>
 
                   <div className="mt-4 flex flex-wrap gap-2">
-                    <span
-                      className={`rounded-full px-2.5 py-1 text-xs font-semibold ${getStatusClasses(
-                        booking.status
-                      )}`}
-                    >
-                      {formatStatus(booking.status)}
-                    </span>
+                    <label
+  htmlFor={`mobile-booking-status-${booking._id}`}
+  className="sr-only"
+>
+  Update status for booking {booking._id}
+</label>
+
+<select
+  id={`mobile-booking-status-${booking._id}`}
+  value={booking.status || "pending"}
+  disabled={updatingBookingId === booking._id}
+  onChange={(event) =>
+    handleStatusUpdate(
+      booking._id,
+      booking.status,
+      event.target.value
+    )
+  }
+  aria-label={`Update status for booking ${booking._id}`}
+  className={`rounded-lg border-0 px-3 py-2 text-xs font-semibold outline-none ring-1 ring-inset ring-slate-200 focus:ring-2 focus:ring-slate-950/20 disabled:cursor-wait disabled:opacity-60 ${getStatusClasses(
+    booking.status
+  )}`}
+>
+  <option value="pending">Pending</option>
+  <option value="confirmed">Confirmed</option>
+  <option value="in_progress">In progress</option>
+  <option value="completed">Completed</option>
+  <option value="cancelled">Cancelled</option>
+</select>
+
+{updatingBookingId === booking._id && (
+  <Loader2
+    className="h-3.5 w-3.5 animate-spin text-slate-400"
+    aria-hidden="true"
+  />
+)}
 
                     <span
                       className={`rounded-full px-2.5 py-1 text-xs font-semibold ${getPaymentClasses(
@@ -706,7 +776,6 @@ fetchBookingTransaction(booking._id);
 setStatusUpdateError("");
 setBookingTransaction(null);
 fetchBookingTransaction(booking._id);
-  fetchBookingTransaction(booking._id);
 }}
   className="mt-4 inline-flex h-9 items-center justify-center rounded-xl border border-slate-200 px-3 text-xs font-semibold text-slate-700 transition hover:bg-slate-50 hover:text-slate-950 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2"
 >
@@ -776,7 +845,7 @@ fetchBookingTransaction(booking._id);
     role="presentation"
     onMouseDown={(event) => {
   if (
-    !updatingStatus &&
+    updatingBookingId !== selectedBooking?._id &&
     event.target === event.currentTarget
   ) {
     setSelectedBooking(null);
@@ -809,7 +878,7 @@ fetchBookingTransaction(booking._id);
         <button
           type="button"
           onClick={() => setSelectedBooking(null)}
-          disabled={updatingStatus}
+          disabled={updatingBookingId === selectedBooking?._id}
           aria-label="Close booking details"
           className="disabled:cursor-not-allowed disabled:opacity-50 flex h-9 w-9 items-center justify-center rounded-xl text-slate-400 transition hover:bg-slate-100 hover:text-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2"
         >
@@ -860,8 +929,14 @@ fetchBookingTransaction(booking._id);
           <button
             key={option.value}
             type="button"
-            disabled={updatingStatus || isActive}
-            onClick={() => handleStatusUpdate(option.value)}
+            disabled={updatingBookingId === selectedBooking?._id || isActive}
+            onClick={() =>
+              handleStatusUpdate(
+                selectedBooking._id,
+                selectedBooking.status,
+                option.value
+              )
+            }
             aria-label={`Set booking status to ${option.label}`}
             aria-pressed={isActive}
             className={`inline-flex items-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 ${
@@ -884,7 +959,7 @@ fetchBookingTransaction(booking._id);
     </div>
   </div>
 
-  {updatingStatus && (
+  {updatingBookingId === selectedBooking?._id && (
     <div
       className="flex items-center gap-2 text-xs text-slate-500"
       role="status"
@@ -1213,7 +1288,7 @@ fetchBookingTransaction(booking._id);
       <div className="flex justify-end border-t border-slate-100 bg-slate-50/60 p-5 sm:p-6">
         <button
   type="button"
-  disabled={updatingStatus}
+  disabled={updatingBookingId === selectedBooking?._id}
   onClick={() => {
     setSelectedBooking(null);
     setBookingTransaction(null);

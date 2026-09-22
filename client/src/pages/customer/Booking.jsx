@@ -31,10 +31,9 @@ function Booking() {
   const navigate = useNavigate();
 
   const {
-    loading: bookingLoading,
-    error: bookingError,
-    currentBooking,
-  } = useSelector((state) => state.bookings);
+  loading: bookingLoading,
+  error: bookingError,
+} = useSelector((state) => state.bookings);
 
   const [service, setService] = useState(null);
   const [serviceLoading, setServiceLoading] = useState(true);
@@ -74,16 +73,16 @@ function Booking() {
     dispatch(clearBookingError());
   }, [dispatch]);
 
-  useEffect(() => {
-    if (currentBooking) {
-      navigate(
-        `/checkout/${currentBooking._id}`,
-        {
-          replace: true,
-        }
-      );
-    }
-  }, [currentBooking, navigate]);
+  // useEffect(() => {
+  //   if (currentBooking) {
+  //     navigate(
+  //       `/checkout/${currentBooking._id}`,
+  //       {
+  //         replace: true,
+  //       }
+  //     );
+  //   }
+  // }, [currentBooking, navigate]);
 
   const minimumDateTime = useMemo(() => {
     const now = new Date();
@@ -110,21 +109,31 @@ function Booking() {
   };
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
+  event.preventDefault();
 
-    const result = await dispatch(
-  createBooking({
-    service: serviceId,
-    bookingDate: form.bookingDate,
-    address: form.address.trim(),
-    notes: form.notes.trim(),
-  })
-);
+  const result = await dispatch(
+    createBooking({
+      service: serviceId,
+      bookingDate: form.bookingDate,
+      address: form.address.trim(),
+      notes: form.notes.trim(),
+    })
+  );
 
-    if (!createBooking.fulfilled.match(result)) {
-      return;
-    }
-  };
+  if (!createBooking.fulfilled.match(result)) {
+    return;
+  }
+
+  const createdBooking = result.payload?.data;
+
+  if (!createdBooking?._id) {
+    return;
+  }
+
+  navigate(`/checkout/${createdBooking._id}`, {
+    replace: true,
+  });
+};
 
   if (serviceLoading) {
     return (

@@ -112,8 +112,24 @@ function CustomerLayout() {
                 </Link>
               </>
             ) : (
-              <div className="relative">
-                <button
+              <>
+                {user?.role === "admin" && (
+                  <Link
+                    to="/crm"
+                    onClick={() => setAccountMenuOpen(false)}
+                    className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-sm font-medium text-slate-700 transition-all duration-200 hover:border-slate-300 hover:bg-slate-50 hover:text-slate-950 active:scale-[0.98]"
+                    aria-label="Open CRM dashboard"
+                  >
+                    <LayoutDashboard
+                      className="h-4 w-4"
+                      aria-hidden="true"
+                    />
+                    CRM
+                  </Link>
+                )}
+
+                <div className="relative">
+                  <button
                   type="button"
                   onClick={() =>
                     setAccountMenuOpen((open) => !open)
@@ -197,7 +213,8 @@ function CustomerLayout() {
                     </button>
                   </div>
                 )}
-              </div>
+                </div>
+              </>
             )}
           </div>
 
@@ -284,6 +301,19 @@ function CustomerLayout() {
                   </div>
                 ) : (
                   <div className="space-y-1">
+                      {user?.role === "admin" && (
+                        <Link
+                          to="/crm"
+                          onClick={closeMobileMenu}
+                          className="flex items-center gap-3 rounded-xl bg-slate-950 px-3 py-2.5 text-sm font-medium text-white transition-all duration-200 hover:bg-slate-800 active:scale-[0.98]"
+                        >
+                          <LayoutDashboard
+                            className="h-4 w-4"
+                            aria-hidden="true"
+                          />
+                          CRM Dashboard
+                        </Link>
+                      )}
                     <div className="mb-2 flex items-center gap-3 rounded-xl bg-slate-50 px-3 py-3">
                       <span
                         className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-slate-950 text-xs font-semibold text-white"

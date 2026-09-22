@@ -60,6 +60,15 @@ function Login() {
 
     const result = await dispatch(loginUser(form));
 
+    const loggedInUser = result.payload?.data?.user;
+
+if (loggedInUser?.role === "admin") {
+  navigate("/crm", { replace: true });
+  return;
+}
+
+navigate("/", { replace: true });
+
     if (loginUser.fulfilled.match(result)) {
       navigate(redirectPath, {
         replace: true,

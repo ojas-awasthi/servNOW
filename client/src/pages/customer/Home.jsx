@@ -171,15 +171,15 @@ function Home() {
       : services.slice(0, 3);
   }, [services]);
 
-  const handleSearch = () => {
-    const query = search.trim();
+ const handleSearch = () => {
+  const query = search.trim();
 
-    navigate(
-      query
-        ? `/services?search=${encodeURIComponent(query)}`
-        : "/services"
-    );
-  };
+  if (!query) {
+    return;
+  }
+
+  navigate(`/services?search=${encodeURIComponent(query)}`);
+};
 
   const handleSearchKeyDown = (event) => {
     if (event.key === "Enter") {
@@ -238,11 +238,12 @@ function Home() {
               </div>
 
               <Button
-                size="lg"
-                onClick={handleSearch}
-                className="shrink-0"
-                aria-label="Search services"
-              >
+  size="lg"
+  onClick={handleSearch}
+  disabled={!search.trim()}
+  className="shrink-0"
+  aria-label="Search services"
+>
                 <Search
                   className="h-4 w-4"
                   aria-hidden="true"

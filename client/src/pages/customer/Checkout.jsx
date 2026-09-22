@@ -5,7 +5,6 @@ import {
   CreditCard,
   LockKeyhole,
   ShieldCheck,
-  Smartphone,
 } from "lucide-react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
@@ -24,13 +23,15 @@ function Checkout() {
   const [paymentLoading, setPaymentLoading] = useState(false);
   const [error, setError] = useState("");
   const [paymentError, setPaymentError] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState("mock");
+  const [paymentMethod, setPaymentMethod] = useState("");
 
   useEffect(() => {
     const loadBooking = async () => {
       try {
         setLoading(true);
         setError("");
+        setPaymentError("");
+        setPaymentMethod("");
 
         const response = await api.get(`/bookings/${bookingId}`);
 
@@ -49,6 +50,25 @@ function Checkout() {
   }, [bookingId]);
 
   const handlePayment = async () => {
+    if (!paymentMethod) {
+      setPaymentError(
+        "Please select a payment method to continue."
+      );
+      return;
+    }
+
+    if (!booking?._id) {
+      setPaymentError(
+        "Booking information is unavailable. Please try again."
+      );
+      return;
+    }
+
+    if (booking.paymentStatus === "paid") {
+      setPaymentError("This booking has already been paid.");
+      return;
+    }
+
     try {
       setPaymentLoading(true);
       setPaymentError("");
@@ -69,7 +89,7 @@ function Checkout() {
     } catch (requestError) {
       setPaymentError(
         requestError.response?.data?.message ||
-          "Payment could not be completed."
+          "Payment could not be completed. Please try again."
       );
     } finally {
       setPaymentLoading(false);
@@ -117,8 +137,8 @@ function Checkout() {
 
   const service = booking.service;
   const provider = booking.provider;
-
   const amount = Number(booking.amount || 0);
+  const isPaid = booking.paymentStatus === "paid";
 
   return (
     <main className="min-h-[calc(100vh-73px)] bg-slate-50 px-4 py-8 sm:px-6 lg:px-8">
@@ -178,12 +198,15 @@ function Checkout() {
             )}
 
             <div className="mt-7 space-y-3">
+              {/* MOCK CARD */}
               <button
                 type="button"
+                disabled={isPaid || paymentLoading}
                 onClick={() => {
                   setPaymentMethod("mock");
                   setPaymentError("");
                 }}
+                aria-pressed={paymentMethod === "mock"}
                 className={[
                   "flex w-full items-center gap-4 rounded-2xl border p-4 text-left",
                   "transition-all duration-200",
@@ -191,8 +214,8 @@ function Checkout() {
                   paymentMethod === "mock"
                     ? "border-slate-950 bg-slate-50"
                     : "border-slate-200 bg-white hover:border-slate-300",
+                  "disabled:cursor-not-allowed disabled:opacity-60",
                 ].join(" ")}
-                aria-pressed={paymentMethod === "mock"}
               >
                 <span
                   className={[
@@ -226,30 +249,96 @@ function Checkout() {
                 )}
               </button>
 
+              {/* UPI */}
               <button
                 type="button"
+                disabled={isPaid || paymentLoading}
                 onClick={() => {
-                  setPaymentMethod("mock");
+                  setPaymentMethod("upi");
                   setPaymentError("");
                 }}
-                className="flex w-full items-center gap-4 rounded-2xl border border-slate-200 bg-white p-4 text-left transition-all duration-200 hover:border-slate-300 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-slate-950/10"
+                aria-pressed={paymentMethod === "upi"}
+                className={[
+                  "flex w-full items-center gap-3 rounded-2xl border p-4 text-left",
+                  "transition-all duration-200",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2",
+                  paymentMethod === "upi"
+                    ? "border-slate-950 bg-slate-50 ring-2 ring-slate-950/5"
+                    : "border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50",
+                  "disabled:cursor-not-allowed disabled:opacity-60",
+                ].join(" ")}
               >
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-500">
-                  <Smartphone
-                    className="h-5 w-5"
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-100">
+                  <span
+                    className="text-sm font-bold text-slate-700"
+                    aria-hidden="true"
+                  >
+                    UPI
+                  </span>
+                </div>
+
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-semibold text-slate-900">
+                    UPI
+                  </p>
+
+                  <p className="mt-0.5 text-xs text-slate-500">
+                    Pay securely using UPI
+                  </p>
+                </div>
+
+                {paymentMethod === "upi" && (
+                  <CheckCircle2
+                    className="h-5 w-5 shrink-0 text-emerald-600"
                     aria-hidden="true"
                   />
-                </span>
+                )}
+              </button>
 
-                <span className="min-w-0 flex-1">
-                  <span className="block text-sm font-semibold text-slate-900">
-                    UPI / Wallet
+              {/* WALLET */}
+              <button
+                type="button"
+                disabled={isPaid || paymentLoading}
+                onClick={() => {
+                  setPaymentMethod("wallet");
+                  setPaymentError("");
+                }}
+                aria-pressed={paymentMethod === "wallet"}
+                className={[
+                  "flex w-full items-center gap-3 rounded-2xl border p-4 text-left",
+                  "transition-all duration-200",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2",
+                  paymentMethod === "wallet"
+                    ? "border-slate-950 bg-slate-50 ring-2 ring-slate-950/5"
+                    : "border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50",
+                  "disabled:cursor-not-allowed disabled:opacity-60",
+                ].join(" ")}
+              >
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-100">
+                  <span
+                    className="text-xs font-bold text-slate-700"
+                    aria-hidden="true"
+                  >
+                    WAL
                   </span>
+                </div>
 
-                  <span className="mt-0.5 block text-xs text-slate-500">
-                    Simulated through the test payment gateway.
-                  </span>
-                </span>
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-semibold text-slate-900">
+                    Wallet
+                  </p>
+
+                  <p className="mt-0.5 text-xs text-slate-500">
+                    Pay using a supported wallet
+                  </p>
+                </div>
+
+                {paymentMethod === "wallet" && (
+                  <CheckCircle2
+                    className="h-5 w-5 shrink-0 text-emerald-600"
+                    aria-hidden="true"
+                  />
+                )}
               </button>
             </div>
 
@@ -279,16 +368,30 @@ function Checkout() {
                 size="lg"
                 className="w-full"
                 loading={paymentLoading}
-                disabled={paymentLoading || booking.paymentStatus === "paid"}
+                disabled={
+                  paymentLoading ||
+                  isPaid ||
+                  !paymentMethod
+                }
                 onClick={handlePayment}
               >
-                {booking.paymentStatus === "paid"
+                {isPaid
                   ? "Payment already completed"
-                  : `Pay ₹${amount.toLocaleString("en-IN")}`}
+                  : paymentLoading
+                    ? "Processing payment..."
+                    : `Pay ₹${amount.toLocaleString("en-IN")}`}
               </Button>
 
               <p className="mt-3 text-center text-xs text-slate-400">
-                By continuing, you confirm the booking details above.
+                {paymentMethod
+                  ? `Selected payment method: ${
+                      paymentMethod === "mock"
+                        ? "Mock card"
+                        : paymentMethod === "upi"
+                          ? "UPI"
+                          : "Wallet"
+                    }`
+                  : "Select a payment method to continue."}
               </p>
             </div>
           </Card>
@@ -307,9 +410,7 @@ function Checkout() {
                   </h2>
                 </div>
 
-                <Badge>
-                  {booking.status}
-                </Badge>
+                <Badge>{booking.status}</Badge>
               </div>
 
               <div className="mt-5 space-y-4 border-y border-slate-100 py-5">
@@ -372,7 +473,7 @@ function Checkout() {
 
                 <Badge
                   variant={
-                    booking.paymentStatus === "paid"
+                    isPaid
                       ? "success"
                       : "warning"
                   }

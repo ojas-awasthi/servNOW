@@ -8,7 +8,7 @@ ServNOW is a full-stack Service Marketplace and CRM Management Platform built as
 
 **Backend API:** https://servnow-api.onrender.com
 
-**GitHub Repository:** https://github.com/ojas-awasthi/servnow-proj
+**GitHub Repository:** https://github.com/ojas-awasthi/servNOW
 
 **Database:** MongoDB Atlas
 
@@ -120,17 +120,20 @@ MongoDB Atlas
 ```text
 Test123456
 ```
-
 | Name | Email | Role | Password |
-|---|---|---|---|
+| ServNOW Admin | `admin@servnow.com` | Admin | `Test123456` |
+
+| ServNOW Sales | `sales@servnow.com` | Sales | `Test123456` |
+
+| ServNOW Support | `support@servnow.com` | Support | `Test123456` |
+
+| Raj Services | `provider@servnow.com` | Provider | `Test123456` |
+
+
 | Aru | `aru22@gmail.com` | Customer | `Test123456` |
 | Pankaj Yadav | `ada@servnow.com` | Customer | `Test123456` |
 | Ojas Test | `ojastest@servnow.com` | Customer | `Test123456` |
-| ServNOW Support | `support@servnow.com` | Support | `Test123456` |
-| ServNOW Sales | `sales@servnow.test` | Sales | `Test123456` |
 | Ojas Customer | `customer@servnow.com` | Customer | `Test123456` |
-| Raj Services | `provider@servnow.com` | Provider | `Test123456` |
-| ServNOW Admin | `admin@servnow.com` | Admin | `Test123456` |
 
 > **Production note:** `sales@servnow.test` uses a reserved `.test` domain. If the production email validator rejects this address during login, update that account in MongoDB Atlas to a valid domain such as `sales@servnow.com` before using the Sales demo account.
 

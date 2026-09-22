@@ -16,7 +16,7 @@ import {
   Star,
   X,
 } from "lucide-react";
-
+import { getCategoryImage } from "../../utils/categoryImages";
 import { fetchServices } from "../../features/services/servicesSlice";
 import { fetchCategories } from "../../features/categories/categoriesSlice";
 
@@ -142,12 +142,24 @@ function ServiceCard({ service }) {
     >
       {/* Service visual */}
       <div className="relative flex h-52 items-center justify-center bg-slate-100">
-        <div
-          className="text-4xl text-slate-300 transition-transform duration-300 group-hover:scale-110"
-          aria-hidden="true"
-        >
-          ✦
-        </div>
+        <div className="relative h-52 overflow-hidden bg-slate-100">
+  {getCategoryImage(service.category?.name) ? (
+    <img
+      src={getCategoryImage(service.category?.name)}
+      alt={`${service.category?.name || "Service"} category`}
+      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+    />
+  ) : (
+    <div
+      className="flex h-full items-center justify-center text-4xl text-slate-300"
+      aria-hidden="true"
+    >
+      ✦
+    </div>
+  )}
+
+  {/* existing Featured badge / Wishlist button stays here */}
+</div>
 
         {service.isFeatured && (
           <div className="absolute left-4 top-4">
