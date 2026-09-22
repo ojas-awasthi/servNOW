@@ -689,7 +689,7 @@ https://servnow-proj.vercel.app/
 https://servnow-api.onrender.com
 
 **Source Code:**  
-https://github.com/ojas-awasthi/servnow-proj
+https://github.com/ojas-awasthi/servNOW
 
 ---
 
