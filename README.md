@@ -135,7 +135,6 @@ Test123456
 | Ojas Test | `ojastest@servnow.com` | Customer | `Test123456` |
 | Ojas Customer | `customer@servnow.com` | Customer | `Test123456` |
 
-> **Production note:** `sales@servnow.test` uses a reserved `.test` domain. If the production email validator rejects this address during login, update that account in MongoDB Atlas to a valid domain such as `sales@servnow.com` before using the Sales demo account.
 
 ---
 
